@@ -1,0 +1,18 @@
+{
+  "restartable": "rs",
+  "ignore": [
+    ".git",
+    "tmp",
+    "src",
+    "node_modules"
+  ],
+  "verbose": true,
+  "execMap": {
+    "js": "node"
+  },
+  "script": "./server/index.js",
+  "watch": [
+    "server"
+  ],
+  "ext": "js json css html"
+}

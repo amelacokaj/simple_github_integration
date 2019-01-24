@@ -1,0 +1,27 @@
+{
+  "name": "simple_github_integration",
+  "version": "1.0.0",
+  "description": "Demo Project",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "nodemon": "nodemon --watch server server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amelacokaj/simple_github_integration.git"
+  },
+  "author": "Amela Cokaj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amelacokaj/simple_github_integration/issues"
+  },
+  "homepage": "https://github.com/amelacokaj/simple_github_integration#readme",
+  "dependencies": {
+    "hapi": "^18.0.0",
+    "inert": "^5.1.2",
+    "nodemon": "^1.18.9",
+    "path": "^0.12.7"
+  }
+}
