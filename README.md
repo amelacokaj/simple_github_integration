@@ -1,1 +1,2 @@
 # simple_github_integration
+Demo Project
