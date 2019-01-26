@@ -1,11 +1,21 @@
 {
-  "name": "app1",
-  "version": "0.1.0",
-  "private": true,
+  "name": "simple_github_integration",
+  "version": "1.0.0",
+  "description": "Demo Project",
+  "author": "Amela Cokaj",
+  "license": "ISC",
+  "proxy": "http://localhost:3000/",
+  "main": "server/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amelacokaj/simple_github_integration.git"
+  },
+  "homepage": "https://github.com/amelacokaj/simple_github_integration#readme",  
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "nodemon": "nodemon --watch server server/index.js"
   },
   "dependencies": {
     "bootstrap": "^4.2.1",

@@ -1,11 +1,17 @@
-# app1
+# simple_github_integration
+Demo Project
 
 ## Project setup
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Start backend node server with hot-reloads
+```
+npm run nodemon
+```
+
+### Compiles and hot-reloads for frontend development
 ```
 npm run serve
 ```
@@ -14,16 +20,3 @@ npm run serve
 ```
 npm run build
 ```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
