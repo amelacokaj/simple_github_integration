@@ -17,7 +17,7 @@ const init = async () => {
         path: '/',
         handler: (request, h) => {
 
-            return h.file('./index.html');
+            return h.file('./public/index.html');
         }
     });
 
