@@ -21,6 +21,15 @@ const init = async () => {
         }
     });
 
+    server.route({
+        method: 'POST',
+        path: '/login',
+        handler: (request, h) => {
+            console.log('on login test', request.payload);
+            return "works";
+        }
+    });
+
     await server.start();
     console.log(`Server running at: ${server.info.uri}`);
 };

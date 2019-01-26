@@ -1,27 +1,33 @@
 {
-  "name": "simple_github_integration",
-  "version": "1.0.0",
-  "description": "Demo Project",
-  "main": "server/index.js",
+  "name": "app1",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "start": "node server/index.js",
-    "nodemon": "nodemon --watch server server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/amelacokaj/simple_github_integration.git"
-  },
-  "author": "Amela Cokaj",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/amelacokaj/simple_github_integration/issues"
-  },
-  "homepage": "https://github.com/amelacokaj/simple_github_integration#readme",
   "dependencies": {
+    "bootstrap": "^4.2.1",
     "hapi": "^18.0.0",
     "inert": "^5.1.2",
     "nodemon": "^1.18.9",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "vee-validate": "^2.1.5",
+    "vue": "^2.5.21",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.3.0",
+    "@vue/cli-plugin-eslint": "^3.3.0",
+    "@vue/cli-service": "^3.3.0",
+    "@vue/eslint-config-prettier": "^4.0.1",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.1",
+    "vue-template-compiler": "^2.5.21"
   }
 }
