@@ -4,13 +4,12 @@
   "description": "Demo Project",
   "author": "Amela Cokaj",
   "license": "ISC",
-  "proxy": "http://localhost:3000/",
   "main": "server/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/amelacokaj/simple_github_integration.git"
   },
-  "homepage": "https://github.com/amelacokaj/simple_github_integration#readme",  
+  "homepage": "https://github.com/amelacokaj/simple_github_integration#readme",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -18,6 +17,8 @@
     "nodemon": "nodemon --watch server server/index.js"
   },
   "dependencies": {
+    "@octokit/rest": "^16.13.3",
+    "axios": "^0.18.0",
     "bootstrap": "^4.2.1",
     "hapi": "^18.0.0",
     "inert": "^5.1.2",

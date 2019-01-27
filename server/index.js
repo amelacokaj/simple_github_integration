@@ -2,6 +2,8 @@
 const path = require('path');
 const Hapi = require('hapi');
 const Inert = require('inert');
+const Octokit = require('@octokit/rest');
+let githubApi;
 
 const server = Hapi.server({
     port: 3000,
@@ -23,10 +25,33 @@ const init = async () => {
 
     server.route({
         method: 'POST',
-        path: '/login',
-        handler: (request, h) => {
+        path: '/api/login',
+        handler: async (request, h) => {
             console.log('on login test', request.payload);
-            return "works";
+            const {username, password} = request.payload;
+            try {
+                githubApi = new Octokit({
+                    auth: {
+                        username,
+                        password
+                    }
+                });
+                const userProfile = await githubApi.users.getAuthenticated({username});
+                const starredRepos = await githubApi.activity.listReposStarredByAuthenticatedUser({sort: "created"});
+                const { data = [] } = starredRepos;
+                console.log('on octokit getAuthenticated', data.map(item => {
+                    return {
+                        full_name: item.full_name,
+                        description: item.description,
+                        html_url: item.html_url,
+                        stargazers_count: item.stargazers_count
+                    };
+                }));
+                
+            } catch(e){
+                console.log(e);
+            };
+            return h.response({username, password});
         }
     });
 
