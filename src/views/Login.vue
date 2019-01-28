@@ -1,6 +1,8 @@
 <template>
     <div>
         <h2>Login</h2>
+        <div v-show="showErrorMsg" class="alert alert-danger">Problem logging-in, please check your credentials.</div>
+            
         <form @submit.prevent="handleSubmit">
             <div class="form-group">
                 <label for="username">Username</label>
@@ -22,6 +24,7 @@
 
 <script>
 import axios from 'axios';
+import router from '../router';
 
 export default {
     data () {
@@ -29,7 +32,8 @@ export default {
             username: '',
             password: '',
             submitted: false,
-            loggingIn: false
+            loggingIn: false,
+            showErrorMsg: false
         }
     },
     created () {
@@ -37,35 +41,26 @@ export default {
         this.logout();
     },
     methods: {
-        handleResponse(response) {
-            return response.text().then(text => {
-                const data = text && JSON.parse(text);
-                if (!response.ok) {
-                    if (response.status === 401) {
-                        // auto logout if 401 response returned from api
-                        this.logout();
-                        window.location.reload(true);
-                    }
-
-                    const error = (data && data.message) || response.statusText;
-                    return Promise.reject(error);
-                }
-
-                return data;
-            });
-        },
-        login(username, password) {            
-            console.log("on login", username, password);
+        login(username, password) {
             axios.post("/api/login", { username, password })
-                .then(this.handleResponse)
-                .then(user => {
-                    // login successful if there's a jwt token in the response
-                    if (user.token) {
-                        // store user details and jwt token in local storage to keep user logged in between page refreshes
-                        localStorage.setItem('user', JSON.stringify(user));
+                .then(response => {
+                    this.loggingIn = false;
+                    if(response.status == 200) {
+                        const { data } = response;
+                        if(data) {
+                            localStorage.setItem('user', JSON.stringify(data));
+                            //GO TO HOME/PROFILE
+                            router.push('/');
+                        } else {
+                            this.showErrorMsg = true;
+                        }
+                    } else {
+                        this.showErrorMsg = true;
                     }
-
-                    return user;
+                }).catch(e => {
+                    console.log("on error", e);
+                    this.loggingIn = false;
+                    this.showErrorMsg = true;
                 });
         },
         logout() {
@@ -77,6 +72,7 @@ export default {
             const { username, password } = this;
             console.log("on submit", username, password);
             if (username && password) {
+                this.loggingIn = true;
                 this.login(username, password);
             }
         }

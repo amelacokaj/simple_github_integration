@@ -24,6 +24,51 @@ const init = async () => {
     });
 
     server.route({
+        method: 'GET',
+        path: '/api/profile',
+        handler: async (request, h) => {
+            try {
+                const userProfile = await githubApi.users.getAuthenticated({username});
+                const { data } = userProfile; 
+                const userData = {
+                    username: data.login, 
+                    avatar_url: data.avatar_url, 
+                    profile_url: data.html_url, 
+                    type: data.type 
+                };
+                return h.response(userData);
+            } catch(e) {
+                console.log(e);
+                return h.code(500);
+            }
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/api/profile/repos',
+        handler: async (request, h) => {
+            try {
+                const starredRepos = await githubApi.activity.listReposStarredByAuthenticatedUser({sort: "created"});
+                const { data = [] } = starredRepos;
+                console.log("request repos", data);
+                const repos = data.map(item => {
+                    return {
+                        full_name: item.full_name,
+                        description: item.description,
+                        html_url: item.html_url,
+                        stargazers_count: item.stargazers_count
+                    };
+                });
+                return h.response({repos});
+            } catch(e) {
+                console.log(e);
+                return h.code(500);
+            }
+        }
+    });
+
+    server.route({
         method: 'POST',
         path: '/api/login',
         handler: async (request, h) => {
@@ -37,21 +82,18 @@ const init = async () => {
                     }
                 });
                 const userProfile = await githubApi.users.getAuthenticated({username});
-                const starredRepos = await githubApi.activity.listReposStarredByAuthenticatedUser({sort: "created"});
-                const { data = [] } = starredRepos;
-                console.log('on octokit getAuthenticated', data.map(item => {
-                    return {
-                        full_name: item.full_name,
-                        description: item.description,
-                        html_url: item.html_url,
-                        stargazers_count: item.stargazers_count
-                    };
-                }));
-                
+                const { data } = userProfile; 
+                const userData = {
+                    username: data.login, 
+                    avatar_url: data.avatar_url, 
+                    profile_url: data.html_url, 
+                    type: data.type 
+                };
+                return h.response(userData);
             } catch(e){
                 console.log(e);
+                return h.code(500);
             };
-            return h.response({username, password});
         }
     });
 
