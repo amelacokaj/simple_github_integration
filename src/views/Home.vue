@@ -2,8 +2,10 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
     <div>{{ username }}</div>
+    <div class="col" style='margin-right:5px;'>
     <button @click="myStarredRepos">Get Starred Repos</button>
-    <table class="table table-striped" v-if="starredRepos.length > 0">
+    </div>
+    <table class="table table-bordered" v-if="starredRepos.length > 0">
       <thead>
         <tr>
           <th scope="col">Name</th>

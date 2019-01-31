@@ -42,7 +42,7 @@ export default {
     },
     methods: {
         login(username, password) {
-            axios.post("/api/login", { username, password })
+            axios.get("/api/login", {auth: { username, password }})
                 .then(response => {
                     this.loggingIn = false;
                     if(response.status == 200) {
@@ -64,7 +64,6 @@ export default {
                 });
         },
         logout() {
-            // remove user from local storage to log user out
             localStorage.removeItem('user');
         },
         handleSubmit (e) {
