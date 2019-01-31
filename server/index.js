@@ -73,51 +73,39 @@ const init = async () => {
 
   server.route({
     method: "GET",
-    path: "/api/test",
-    handler: async (request, h) => {
-      console.log("testtttt");
-      const username = "amelacokaj@gmail.com";
-      const password = "avenirirubini1";
-      const auth =
-        "Basic " + Buffer.from(username + ":" + password).toString("base64");
-      console.log("basic auth", auth);
-      try {
-        const result = axios
-          .get("https://api.github.com/user", {
-            headers: {
-              Authorization: auth
-            }
-          })
-          .then(resp => console.log("response", resp));
-        //console.log(result);
-      } catch (e) {
-        console.log("on error", e);
-      }
-      //return h.file('./public/index.html');
-    }
-  });
-
-  server.route({
-    method: "GET",
     path: "/api/profile/repos",
     handler: async (request, h) => {
       try {
-        let repos = [];
         const {username} = request.auth.credentials;
-        const result = await axios.get(`https://api.github.com/users/${username}/starred?sort=created`);
-        if(result && result.status == 200) {
-            const { data = [] } = result;
-            console.log("request repos", data);
-            repos = data.map(item => {
-                return {
+
+        //select and check model/table if the username has repos stored in db
+        const Repos = require('./models/repos');
+        const collection =  await Repos.findAll({ username }, { columns: ["full_name", "description", "html_url","stargazers_count"] })
+        
+        if(collection && collection.models.length > 0) {
+          return h.response({ repos: collection});
+        } 
+        else 
+        {
+          const result = await axios.get(`https://api.github.com/users/${username}/starred?sort=created`);
+          if(result && result.status == 200) {
+            console.log("githubResult");
+              const { data = [] } = result;
+              for (const item of data) {
+                const itemData = {
                     full_name: item.full_name,
                     description: item.description,
                     html_url: item.html_url,
                     stargazers_count: item.stargazers_count
-                };
-            });
+                }
+                await Repos.forge({...itemData, username}).save();
+                repos.push(itemData);
+              }
+              
+            let repos = [];
+            return h.response({ repos });
+          }
         }
-        return h.response({ repos });
       } catch (e) {
         console.log(e);
         return h("internal error").code(500);
