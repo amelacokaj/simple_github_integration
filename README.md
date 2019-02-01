@@ -20,3 +20,8 @@ npm run serve
 ```
 npm run build
 ```
+
+### MySQL Database Export Dump
+```
+/server/db_exports/github_integration.sql
+```
