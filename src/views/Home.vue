@@ -1,5 +1,11 @@
 <template>
   <div class="home">
+    <div class="row">
+      <div class="col">
+        <button class="float-right" @click="logout">Logout</button>
+      </div>
+    </div>
+    <hr/>
     <img alt="Vue logo" src="../assets/logo.png">
     <div>{{ username }}</div>
     <div class="col" style='margin-right:5px;'>
@@ -26,6 +32,7 @@
 
 <script>
 import axios from 'axios';
+import router from '../router';
 
 export default {
   name: "home",
@@ -54,6 +61,12 @@ export default {
         const { repos } = response.data;
         this.starredRepos = repos;
       });
+    },
+    logout() {
+        axios.get("/api/logout").then(response => {
+            localStorage.removeItem('user');
+            router.push('/login');
+        });
     }
   }
 };

@@ -2,6 +2,7 @@
     <div>
         <h2>Login</h2>
         <div v-show="showErrorMsg" class="alert alert-danger">Problem logging-in, please check your credentials.</div>
+        <div v-show="showGithubErrorMsg" class="alert alert-danger">Github responded with a problem logging-in to Github, try again.</div>
             
         <form @submit.prevent="handleSubmit">
             <div class="form-group">
@@ -33,16 +34,20 @@ export default {
             password: '',
             submitted: false,
             loggingIn: false,
-            showErrorMsg: false
+            showErrorMsg: false,
+            showGithubErrorMsg: false
         }
     },
     created () {
-        // reset login status
-        this.logout();
+        const loggedIn = localStorage.getItem('user');
+        if(loggedIn){
+            router.push('/');
+        }
     },
     methods: {
         login(username, password) {
-            axios.get("/api/login", {auth: { username, password }})
+            this.showGithubErrorMsg = false;
+            axios.post("/api/login", { username, password })
                 .then(response => {
                     this.loggingIn = false;
                     if(response.status == 200) {
@@ -57,22 +62,27 @@ export default {
                     } else {
                         this.showErrorMsg = true;
                     }
-                }).catch(e => {
-                    console.log("on error", e);
+                }).catch(error => {
                     this.loggingIn = false;
-                    this.showErrorMsg = true;
+                    console.log("on error", error.response);
+                    if(error.response.status == 412) {
+                        this.showGithubErrorMsg = true;
+                        this.showErrorMsg = false;
+                    } else {
+                        this.showErrorMsg = true;
+                    }
                 });
-        },
-        logout() {
-            localStorage.removeItem('user');
         },
         handleSubmit (e) {
             this.submitted = true;
             const { username, password } = this;
-            console.log("on submit", username, password);
+            
             if (username && password) {
+                this.showErrorMsg = false;
                 this.loggingIn = true;
                 this.login(username, password);
+            } else {
+                this.showErrorMsg = true;
             }
         }
     }
